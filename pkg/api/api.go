@@ -34,6 +34,9 @@ func New(config *Config, svc service.Service, router *mux.Router) (*API, error) 
 	// Endpoint for browser preflight requests
 	api.Router.Methods("OPTIONS").HandlerFunc(api.corsMiddleware(api.preflightHandler))
 
+	// login endpoints
+	api.Router.HandleFunc("/api/v1/login", api.corsMiddleware(api.logMiddleware(api.Login))).Methods("POST")
+
 	return api, nil
 
 }

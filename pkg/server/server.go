@@ -69,7 +69,7 @@ func (i *Instance) Start() {
 		Handler: router,
 	}
 
-	err = i.httpServer.ListenAndServe()
+	err = i.httpServer.ListenAndServeTLS(i.Config.CertFile, i.Config.KeyFile)
 	if err != http.ErrServerClosed {
 		logrus.WithError(err).Error("HTTP Server stopped unexpected")
 		i.Shutdown()

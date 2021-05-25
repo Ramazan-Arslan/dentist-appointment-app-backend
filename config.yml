@@ -11,4 +11,4 @@ database:
     addr: 127.0.0.1:3306
     username: root
     password: test
-    db_name: license_controller
+    db_name: dentist_app
