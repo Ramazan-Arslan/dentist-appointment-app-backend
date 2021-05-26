@@ -26,7 +26,8 @@ func (s *Service) Login(user model.User) (*model.User, error) {
 		return nil, err
 	}
 	atClaims := jwt.MapClaims{}
-	atClaims["email"] = user.Userdata.Email
+	atClaims["email"] = u.Userdata.Email
+	atClaims["fullName"] = u.Userdata.Fullname
 	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	token, err := at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))

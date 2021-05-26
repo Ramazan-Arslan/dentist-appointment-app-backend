@@ -11,11 +11,6 @@ type User struct {
 		Email    string `json:"email"`
 		Role     string `json:"role"`
 		Password string `json:"password"`
-		Lang     string `json:"lang"`
-		Ability  []struct {
-			Action  string `json:"action"`
-			Subject string `json:"subject"`
-		} `json:"ability"`
 	} `json:"userData"`
 	Accesstoken  string `json:"accessToken"`
 	Refreshtoken string `json:"refreshToken"`

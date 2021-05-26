@@ -47,14 +47,14 @@ func NewMySQLRepository(db *sql.DB) (*MySQLRepository, error) {
 
 // Return active deviceses count
 func (r *MySQLRepository) GetUser(user model.User) (*model.User, error) {
-	q := "SELECT email, password, role, fullname, lang FROM " + tableName + " WHERE email=?"
+	q := "SELECT email, password, role, fullname FROM " + tableName + " WHERE email=?"
 
 	logrus.Debug("QUERY: ", q, "email: ", user.Userdata.Email)
 	res := r.db.QueryRow(q, user.Userdata.Email)
 
 	u := &model.User{}
 
-	if err := res.Scan(&u.Userdata.Email, &u.Userdata.Password, &u.Userdata.Role, &u.Userdata.Fullname, &u.Userdata.Lang); err != nil {
+	if err := res.Scan(&u.Userdata.Email, &u.Userdata.Password, &u.Userdata.Role, &u.Userdata.Fullname); err != nil {
 		return nil, err
 	}
 

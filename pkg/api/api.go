@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 
-	"github.com/ceng316/dentist-backend/pkg/api/response"
 	"github.com/ceng316/dentist-backend/pkg/service"
 
 	"github.com/gorilla/mux"
@@ -34,22 +33,12 @@ func New(config *Config, svc service.Service, router *mux.Router) (*API, error) 
 	// Endpoint for browser preflight requests
 	api.Router.Methods("OPTIONS").HandlerFunc(api.corsMiddleware(api.preflightHandler))
 
-	// login endpoints
+	// user endpoints
 	api.Router.HandleFunc("/api/v1/login", api.corsMiddleware(api.logMiddleware(api.Login))).Methods("POST")
+	api.Router.HandleFunc("/api/v1/userInfo", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.Login)))).Methods("POST")
 
 	return api, nil
 
-}
-
-// healthHandler is the healtcheck handler
-func (a *API) healthHandler(w http.ResponseWriter, r *http.Request) {
-	response.Write(w, r, struct {
-		Status string `json:"status"`
-	}{
-		"ok",
-	})
-
-	return
 }
 
 // preflightHandler is the healtcheck handler
