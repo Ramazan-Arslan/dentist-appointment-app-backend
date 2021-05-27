@@ -27,7 +27,7 @@ build-darwin-amd64:
 			-X github.com/ceng316/dentist-backend/pkg/version.Branch=${BRANCH} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildUser=${BUILDUSER} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildDate=${BUILDTIME}" \
-			-o ./bin/license-controller-wui-backend-${VERSION}-darwin-amd64/$$target ./cmd/$$target; \
+			-o ./bin/dentist-backend-${VERSION}-darwin-amd64/$$target ./cmd/$$target; \
 	done
 
 build-linux-amd64:
@@ -37,7 +37,7 @@ build-linux-amd64:
 			-X github.com/ceng316/dentist-backend/pkg/version.Branch=${BRANCH} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildUser=${BUILDUSER} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildDate=${BUILDTIME}" \
-			-o ./bin/license-controller-wui-backend-${VERSION}-linux-amd64/$$target ./cmd/$$target; \
+			-o ./bin/dentist-backend-${VERSION}-linux-amd64/$$target ./cmd/$$target; \
 	done
 
 build-windows-amd64:
@@ -47,7 +47,7 @@ build-windows-amd64:
 			-X github.com/ceng316/dentist-backend/pkg/version.Branch=${BRANCH} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildUser=${BUILDUSER} \
 			-X github.com/ceng316/dentist-backend/pkg/version.BuildDate=${BUILDTIME}" \
-			-o ./bin/license-controller-wui-backend-${VERSION}-windows-amd64/$$target.exe ./cmd/$$target; \
+			-o ./bin/dentist-backend-${VERSION}-windows-amd64/$$target.exe ./cmd/$$target; \
 	done
 
 clean:
@@ -57,12 +57,20 @@ prepare-release: clean
 	$(info "Run: 'git commit' and 'git tag', then 'make release'")
 
 release: build-darwin-amd64 build-linux-amd64 build-windows-amd64
-	cp ${PWD}/LICENSE ${PWD}/bin/license-controller-wui-backend-${VERSION}-darwin-amd64
-	cp ${PWD}/LICENSE ${PWD}/bin/license-controller-wui-backend-${VERSION}-linux-amd64
-	cp ${PWD}/LICENSE ${PWD}/bin/license-controller-wui-backend-${VERSION}-windows-amd64
-	cp ${PWD}/config.yml ${PWD}/bin/license-controller-wui-backend-${VERSION}-darwin-amd64
-	cp ${PWD}/config.yml ${PWD}/bin/license-controller-wui-backend-${VERSION}-linux-amd64
-	cp ${PWD}/config.yml ${PWD}/bin/license-controller-wui-backend-${VERSION}-windows-amd64
-	cd ${PWD}/bin; tar cfvz license-controller-wui-backend-${VERSION}-darwin-amd64.tar.gz ./license-controller-wui-backend-${VERSION}-darwin-amd64
-	cd ${PWD}/bin; tar cfvz license-controller-wui-backend-${VERSION}-linux-amd64.tar.gz ./license-controller-wui-backend-${VERSION}-linux-amd64
-	cd ${PWD}/bin; tar cfvz license-controller-wui-backend-${VERSION}-windows-amd64.tar.gz ./license-controller-wui-backend-${VERSION}-windows-amd64
+	cp ${PWD}/LICENSE ${PWD}/bin/dentist-backend-${VERSION}-darwin-amd64
+	cp ${PWD}/LICENSE ${PWD}/bin/dentist-backend-${VERSION}-linux-amd64
+	cp ${PWD}/LICENSE ${PWD}/bin/dentist-backend-${VERSION}-windows-amd64
+	cp ${PWD}/config.yml ${PWD}/bin/dentist-backend-${VERSION}-darwin-amd64
+	cp ${PWD}/config.yml ${PWD}/bin/dentist-backend-${VERSION}-linux-amd64
+	cp ${PWD}/config.yml ${PWD}/bin/dentist-backend-${VERSION}-windows-amd64
+	cd ${PWD}/bin; tar cfvz dentist-backend-${VERSION}-darwin-amd64.tar.gz ./dentist-backend-${VERSION}-darwin-amd64
+	cd ${PWD}/bin; tar cfvz dentist-backend-${VERSION}-linux-amd64.tar.gz ./dentist-backend-${VERSION}-linux-amd64
+	cd ${PWD}/bin; tar cfvz dentist-backend-${VERSION}-windows-amd64.tar.gz ./dentist-backend-${VERSION}-windows-amd64
+
+
+CGO_ENABLED=0 GOARCH=amd64 GOOS=windows go build -a -installsuffix cgo -ldflags "-X github.com/ceng316/dentist-backend/pkg/version.Version=${VERSION} \
+			-X github.com/ceng316/dentist-backend/pkg/version.Revision=${REVISION} \
+			-X github.com/ceng316/dentist-backend/pkg/version.Branch=${BRANCH} \
+			-X github.com/ceng316/dentist-backend/pkg/version.BuildUser=${BUILDUSER} \
+			-X github.com/ceng316/dentist-backend/pkg/version.BuildDate=${BUILDTIME}" \
+			-o ./bin/dentist-backend-${VERSION}-windows-amd64/$$target.exe ./cmd/$$target; \
