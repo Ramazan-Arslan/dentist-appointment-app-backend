@@ -24,3 +24,13 @@ func (s *Service) GetDoctorInfo(id int64) (*model.Doctor, error) {
 
 	return d, err
 }
+
+func (s *Service) AddDoctor(doctor model.Doctor) (bool, error) {
+
+	boolValue, err := s.repository.GetDoctorRepository().Add(&doctor)
+	if err != nil {
+		return false, err
+	}
+
+	return boolValue, err
+}

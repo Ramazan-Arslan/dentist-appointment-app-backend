@@ -27,7 +27,7 @@ func (s *Service) Login(user model.User) (*model.User, error) {
 	atClaims := jwt.MapClaims{}
 	atClaims["email"] = u.Userdata.Email
 	atClaims["fullName"] = u.Userdata.Fullname
-	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
+	atClaims["exp"] = time.Now().Add(time.Hour * 24 * 12).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	token, err := at.SignedString([]byte("your-super-secret"))
 	u.Accesstoken = token

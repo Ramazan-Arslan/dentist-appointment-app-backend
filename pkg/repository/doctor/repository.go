@@ -11,6 +11,7 @@ type Reader interface {
 }
 
 type Writer interface {
+	Add(doctor *model.Doctor) (bool, error)
 }
 
 //Repository repository interface

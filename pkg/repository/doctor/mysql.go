@@ -44,16 +44,31 @@ func NewMySQLRepository(db *sql.DB) (*MySQLRepository, error) {
 
 // Return active deviceses count
 func (r *MySQLRepository) GetDoctorFromID(id int64) (*model.Doctor, error) {
-	q := "SELECT id, full_name FROM " + tableName + " WHERE id=?"
+	q := "SELECT id, full_name, phone, gain  FROM " + tableName + " WHERE id=?"
 
 	logrus.Debug("QUERY: ", q, "id: ", id)
 	res := r.db.QueryRow(q, id)
 
 	d := &model.Doctor{}
 
-	if err := res.Scan(&d.ID, &d.FullName); err != nil {
+	if err := res.Scan(&d.ID, &d.FullName, &d.Phone, &d.Gain); err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
 	return d, nil
+}
+
+func (r *MySQLRepository) Add(doctor *model.Doctor) (bool, error) {
+
+	stmt, err := r.db.Prepare("insert into " + tableName + " (full_name, phone, gain) VALUES(?,?,?)")
+	if err != nil {
+		return false, err
+	}
+	_, err = stmt.Exec(doctor.FullName, doctor.Phone, doctor.Gain)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }

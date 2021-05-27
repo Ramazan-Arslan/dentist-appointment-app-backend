@@ -37,6 +37,7 @@ func New(config *Config, svc service.Service, router *mux.Router) (*API, error) 
 	api.Router.HandleFunc("/api/v1/login", api.corsMiddleware(api.logMiddleware(api.Login))).Methods("POST")
 	api.Router.HandleFunc("/api/v1/userInfo", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.Login)))).Methods("POST")
 	api.Router.HandleFunc("/api/v1/doctorInfo/{doctorID}", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.DoctorInfo)))).Methods("POST")
+	api.Router.HandleFunc("/api/v1/add/doctor", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.AddDoctor)))).Methods("POST")
 
 	return api, nil
 
