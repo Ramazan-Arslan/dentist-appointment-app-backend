@@ -17,7 +17,7 @@ import (
 
 var (
 	configFileFlag = flag.String("config.file", "config.yml", "Path to the configuration file.")
-	logFileFlag    = flag.String("log.file", "license-controller-wui-back.log", "Path to the log file.")
+	logFileFlag    = flag.String("log.file", "dentist-backend.log", "Path to the log file.")
 	versionFlag    = flag.Bool("version", false, "Show version information.")
 	debugFlag      = flag.Bool("debug", false, "Show debug information.")
 )
