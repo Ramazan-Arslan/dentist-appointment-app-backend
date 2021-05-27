@@ -3,10 +3,8 @@ package api
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"strings"
-	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/sirupsen/logrus"
@@ -97,54 +95,4 @@ func (a *API) parseJWT(tokenString string) (jwt.MapClaims, error) {
 	}
 
 	return nil, fmt.Errorf("jwt validation failed")
-}
-
-// createJWT creates, signs, and encodes a JWT token using the HMAC signing method
-func (a *API) createJWT(claims jwt.MapClaims) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err := token.SignedString([]byte(a.config.SigningSecret))
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
-}
-
-// Constants and variables for random string generation
-const (
-	letterBytes   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	letterIdxBits = 6
-	letterIdxMask = 1<<letterIdxBits - 1
-	letterIdxMax  = 63 / letterIdxBits
-)
-
-var (
-	src = rand.NewSource(time.Now().UnixNano())
-)
-
-func (a *API) createRandString(n int) string {
-	b := make([]byte, n)
-	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
-		if remain == 0 {
-			cache, remain = src.Int63(), letterIdxMax
-		}
-		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
-			b[i] = letterBytes[idx]
-			i--
-		}
-		cache >>= letterIdxBits
-		remain--
-	}
-
-	return string(b)
-}
-
-func (a *API) getID(claims jwt.MapClaims) (string, error) {
-	id, ok := claims["id"].(string)
-	if !ok {
-		return "", fmt.Errorf("Unauthorized")
-	}
-
-	return id, nil
 }
