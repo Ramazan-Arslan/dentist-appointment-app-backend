@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 
+	"github.com/ceng316/dentist-backend/pkg/repository/doctor"
 	"github.com/ceng316/dentist-backend/pkg/repository/user"
 )
 
@@ -11,7 +12,8 @@ type MySQLRepository struct {
 	cfg *MySQLConfig
 	db  *sql.DB
 
-	userRepo user.Repository
+	userRepo   user.Repository
+	doctorRepo doctor.Repository
 }
 
 // MySQLConfig defines the MySQL Repository configuration
@@ -62,17 +64,26 @@ func NewMySQLRepository(cfg *MySQLConfig) (*MySQLRepository, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	doctorRepo, err := doctor.NewMySQLRepository(db)
+	if err != nil {
+		return nil, err
+	}
 	return &MySQLRepository{
-		cfg:      cfg,
-		db:       db,
-		userRepo: userRepo,
+		cfg:        cfg,
+		db:         db,
+		userRepo:   userRepo,
+		doctorRepo: doctorRepo,
 	}, nil
 }
 
 // GetUserRepository returns the user repository
 func (r *MySQLRepository) GetUserRepository() user.Repository {
 	return r.userRepo
+}
+
+// GetUserRepository returns the user repository
+func (r *MySQLRepository) GetDoctorRepository() doctor.Repository {
+	return r.doctorRepo
 }
 
 // Shutdown closes the database connection

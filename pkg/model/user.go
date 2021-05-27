@@ -2,7 +2,7 @@ package model
 
 import "errors"
 
-//Customer data
+//User data
 type User struct {
 	Userdata struct {
 		ID       int    `json:"id"`

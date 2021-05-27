@@ -1,7 +1,6 @@
 package user
 
 import (
-	"os"
 	"time"
 
 	"github.com/ceng316/dentist-backend/pkg/model"
@@ -30,7 +29,7 @@ func (s *Service) Login(user model.User) (*model.User, error) {
 	atClaims["fullName"] = u.Userdata.Fullname
 	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	token, err := at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
+	token, err := at.SignedString([]byte("your-super-secret"))
 	u.Accesstoken = token
 	if err != nil {
 		return nil, err

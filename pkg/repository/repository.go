@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/ceng316/dentist-backend/pkg/repository/doctor"
 	"github.com/ceng316/dentist-backend/pkg/repository/user"
 )
 
@@ -8,5 +9,6 @@ import (
 // Repository interface is composition of  Repository interfaces of imported packages.
 type Repository interface {
 	GetUserRepository() user.Repository
+	GetDoctorRepository() doctor.Repository
 	Shutdown()
 }

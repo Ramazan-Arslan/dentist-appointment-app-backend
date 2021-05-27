@@ -56,7 +56,6 @@ func (a *API) jwtMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
-
 		// Check if authentication token is present
 		authHeaderParts := strings.Split(authHeader, " ")
 		if len(authHeaderParts) != 2 || strings.ToLower(authHeaderParts[0]) != "bearer" {
@@ -70,38 +69,7 @@ func (a *API) jwtMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-
-		ctx := context.WithValue(r.Context(), ContextJWTKey, claims)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-}
-
-// jwtMiddleware handles authentication via jwt's
-func (a *API) firmwareDownloadMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Get authentication header
-		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-
-		// Check if authentication token is present
-		authHeaderParts := strings.Split(authHeader, " ")
-		if len(authHeaderParts) != 2 || strings.ToLower(authHeaderParts[0]) != "bearer" {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-
-		// Validate authentication token
-		claims, err := a.parseJWT(authHeaderParts[1])
-		if err != nil {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Println(err)
 			return
 		}
 
@@ -155,8 +123,6 @@ var (
 	src = rand.NewSource(time.Now().UnixNano())
 )
 
-// createRandString creates an random string with the size of n
-// See: http://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang
 func (a *API) createRandString(n int) string {
 	b := make([]byte, n)
 	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
