@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// login handles login info request
+// get type  info
 func (a *API) TypeInfo(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["typeID"], 10, 64)
@@ -38,14 +38,14 @@ func (a *API) AddType(w http.ResponseWriter, r *http.Request) {
 		response.Errorf(w, r, fmt.Errorf("error adding type : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
-	// get user info
-	doctorInfo, err := a.service.GetTypeService().AddType(fwReq)
+	// add type info
+	typeInfo, err := a.service.GetTypeService().AddType(fwReq)
 	if err != nil {
 		response.Errorf(w, r, fmt.Errorf("error adding type : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// write response
-	response.Write(w, r, doctorInfo)
+	response.Write(w, r, typeInfo)
 	return
 }

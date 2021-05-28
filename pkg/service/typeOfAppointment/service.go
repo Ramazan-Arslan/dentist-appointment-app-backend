@@ -25,9 +25,9 @@ func (s *Service) GetTypeInfo(id int64) (*model.Type, error) {
 	return d, err
 }
 
-func (s *Service) AddType(doctor model.Type) (bool, error) {
+func (s *Service) AddType(t model.Type) (bool, error) {
 
-	boolValue, err := s.repository.GetTypeRepository().Add(&doctor)
+	boolValue, err := s.repository.GetTypeRepository().Add(&t)
 	if err != nil {
 		return false, err
 	}

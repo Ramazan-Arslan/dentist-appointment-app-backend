@@ -64,7 +64,7 @@ func (r *MySQLRepository) Add(t *model.Type) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = stmt.Exec(t.Price, t.Type)
+	_, err = stmt.Exec(t.Type, t.Price)
 	if err != nil {
 		return false, err
 	}
