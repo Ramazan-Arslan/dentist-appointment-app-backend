@@ -71,3 +71,26 @@ func (r *MySQLRepository) Add(t *model.Type) (bool, error) {
 
 	return true, nil
 }
+
+func (r *MySQLRepository) Update(t *model.Type) (bool, error) {
+
+	stmt, err := r.db.Prepare("UPDATE " + tableName + " SET type=?, price=? WHERE id=?")
+	if err != nil {
+		return false, err
+	}
+	_, err = stmt.Exec(t.Type, t.Price, t.ID)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *MySQLRepository) CheckExists(id uint) (bool, error) {
+	var exists bool
+	row := r.db.QueryRow(`SELECT EXISTS(SELECT 1 FROM `+tableName+` WHERE id=? )`, id)
+	if err := row.Scan(&exists); err != nil {
+		return false, err
+	}
+	return exists, nil
+}

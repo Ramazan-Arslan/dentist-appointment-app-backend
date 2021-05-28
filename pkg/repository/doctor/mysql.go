@@ -72,6 +72,7 @@ func (r *MySQLRepository) Add(doctor *model.Doctor) (bool, error) {
 
 	return true, nil
 }
+
 func (r *MySQLRepository) Update(doctor *model.Doctor) (bool, error) {
 
 	stmt, err := r.db.Prepare("UPDATE " + tableName + " SET full_name=?, phone=?, gain=? WHERE id=?")

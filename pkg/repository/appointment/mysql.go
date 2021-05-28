@@ -88,3 +88,28 @@ func (r *MySQLRepository) Add(appointment *model.Appointment) (bool, error) {
 
 	return true, nil
 }
+
+func (r *MySQLRepository) Update(appointment *model.Appointment) (bool, error) {
+
+	stmt, err := r.db.Prepare("UPDATE " + tableName + " SET doctor_id=?, type_id=?, patient_name=?, patient_age=?, patient_gender=?, patient_phone=?, date=?, hour=?, description=? WHERE id=?")
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	_, err = stmt.Exec(appointment.Doctor.ID, appointment.Type.ID, appointment.PatientName, appointment.PatientAge, appointment.PatientGender, appointment.PatientPhone, appointment.Date, appointment.Hour, appointment.Description, appointment.ID)
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *MySQLRepository) CheckExists(id uint) (bool, error) {
+	var exists bool
+	row := r.db.QueryRow(`SELECT EXISTS(SELECT 1 FROM `+tableName+` WHERE id=? )`, id)
+	if err := row.Scan(&exists); err != nil {
+		return false, err
+	}
+	return exists, nil
+}

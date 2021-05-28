@@ -8,10 +8,12 @@ import (
 
 type Reader interface {
 	GetAll() ([]*model.Appointment, error)
+	CheckExists(id uint) (bool, error)
 }
 
 type Writer interface {
 	Add(*model.Appointment) (bool, error)
+	Update(doctor *model.Appointment) (bool, error)
 }
 
 //Repository repository interface

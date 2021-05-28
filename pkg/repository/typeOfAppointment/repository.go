@@ -8,10 +8,12 @@ import (
 
 type Reader interface {
 	GetTypeFromID(id int64) (*model.Type, error)
+	CheckExists(id uint) (bool, error)
 }
 
 type Writer interface {
 	Add(t *model.Type) (bool, error)
+	Update(doctor *model.Type) (bool, error)
 }
 
 //Repository repository interface

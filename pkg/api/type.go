@@ -49,3 +49,23 @@ func (a *API) AddType(w http.ResponseWriter, r *http.Request) {
 	response.Write(w, r, typeInfo)
 	return
 }
+
+// Update type handler
+func (a *API) UpdateType(w http.ResponseWriter, r *http.Request) {
+	var fwReq model.Type
+	err := json.NewDecoder(r.Body).Decode(&fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+	// udapte type
+	typeInfo, err := a.service.GetTypeService().UpdateType(fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// write response
+	response.Write(w, r, typeInfo)
+	return
+}

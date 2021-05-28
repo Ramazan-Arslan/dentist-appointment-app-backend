@@ -47,3 +47,22 @@ func (s *Service) AddAppointment(appointment model.Appointment) (bool, error) {
 
 	return boolValue, err
 }
+
+func (s *Service) UpdateAppointment(appointment model.Appointment) (bool, error) {
+
+	// check appointment exists
+	exists, err := s.repository.GetAppointmentRepository().CheckExists(appointment.ID)
+	if err != nil {
+		return false, err
+	}
+	if !exists {
+		return false, err
+	}
+
+	// update appointment
+	boolValue, err := s.repository.GetAppointmentRepository().Update(&appointment)
+	if err != nil {
+		return false, nil
+	}
+	return boolValue, nil
+}

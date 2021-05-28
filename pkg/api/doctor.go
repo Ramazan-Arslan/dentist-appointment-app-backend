@@ -58,7 +58,7 @@ func (a *API) UpdateDoctor(w http.ResponseWriter, r *http.Request) {
 		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
-	// get user info
+	// update doctor
 	doctorInfo, err := a.service.GetDoctorService().UpdateDoctor(fwReq)
 	if err != nil {
 		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())

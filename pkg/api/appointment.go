@@ -42,3 +42,23 @@ func (a *API) AddAppointments(w http.ResponseWriter, r *http.Request) {
 
 	return
 }
+
+// Update Appointment handler
+func (a *API) UpdateAppointment(w http.ResponseWriter, r *http.Request) {
+	var fwReq model.Appointment
+	err := json.NewDecoder(r.Body).Decode(&fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+	// udapte type
+	typeInfo, err := a.service.GetAppointmentService().UpdateAppointment(fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// write response
+	response.Write(w, r, typeInfo)
+	return
+}
