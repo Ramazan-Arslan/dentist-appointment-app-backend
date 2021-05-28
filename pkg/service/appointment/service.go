@@ -79,7 +79,7 @@ func (s *Service) DeleteAppointment(id uint) (bool, error) {
 	}
 
 	// delete appointment
-	boolValue, err := s.repository.GetAppointmentRepository().Delete(id)
+	boolValue, err := s.repository.GetAppointmentRepository().Delete(uint(id))
 	if err != nil {
 		return false, nil
 	}
