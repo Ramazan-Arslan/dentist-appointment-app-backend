@@ -14,6 +14,7 @@ type Reader interface {
 type Writer interface {
 	Add(*model.Appointment) (bool, error)
 	Update(doctor *model.Appointment) (bool, error)
+	Delete(id uint) (bool, error)
 }
 
 //Repository repository interface

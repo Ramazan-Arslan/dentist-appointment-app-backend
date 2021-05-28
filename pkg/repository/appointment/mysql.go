@@ -105,6 +105,22 @@ func (r *MySQLRepository) Update(appointment *model.Appointment) (bool, error) {
 	return true, nil
 }
 
+func (r *MySQLRepository) Delete(id uint) (bool, error) {
+
+	stmt, err := r.db.Prepare("Delete from " + tableName + " WHERE id=?")
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	_, err = stmt.Exec(id)
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+
+	return true, nil
+}
+
 func (r *MySQLRepository) CheckExists(id uint) (bool, error) {
 	var exists bool
 	row := r.db.QueryRow(`SELECT EXISTS(SELECT 1 FROM `+tableName+` WHERE id=? )`, id)

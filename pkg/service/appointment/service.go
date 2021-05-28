@@ -66,3 +66,22 @@ func (s *Service) UpdateAppointment(appointment model.Appointment) (bool, error)
 	}
 	return boolValue, nil
 }
+
+func (s *Service) DeleteAppointment(id uint) (bool, error) {
+
+	// check appointment exists
+	exists, err := s.repository.GetAppointmentRepository().CheckExists(id)
+	if err != nil {
+		return false, err
+	}
+	if !exists {
+		return false, err
+	}
+
+	// delete appointment
+	boolValue, err := s.repository.GetAppointmentRepository().Delete(id)
+	if err != nil {
+		return false, nil
+	}
+	return boolValue, nil
+}
