@@ -4,6 +4,7 @@ import (
 	"github.com/ceng316/dentist-backend/pkg/repository"
 	"github.com/ceng316/dentist-backend/pkg/service/appointment"
 	"github.com/ceng316/dentist-backend/pkg/service/doctor"
+	typeofappointment "github.com/ceng316/dentist-backend/pkg/service/typeOfAppointment"
 	"github.com/ceng316/dentist-backend/pkg/service/user"
 )
 
@@ -14,6 +15,7 @@ type Provider struct {
 	userService        *user.Service
 	doctorService      *doctor.Service
 	appointmentService *appointment.Service
+	typeService        *typeofappointment.Service
 }
 
 func NewProvider(cfg *Config, repo repository.Repository) (*Provider, error) {
@@ -30,12 +32,17 @@ func NewProvider(cfg *Config, repo repository.Repository) (*Provider, error) {
 	if err != nil {
 		return nil, err
 	}
+	typeService, err := typeofappointment.NewService(repo)
+	if err != nil {
+		return nil, err
+	}
 	return &Provider{
 		cfg:                cfg,
 		repository:         repo,
 		userService:        userService,
 		doctorService:      doctorService,
 		appointmentService: appointmentService,
+		typeService:        typeService,
 	}, nil
 }
 
@@ -50,6 +57,9 @@ func (p *Provider) GetDoctorService() *doctor.Service {
 }
 func (p *Provider) GetAppointmentService() *appointment.Service {
 	return p.appointmentService
+}
+func (p *Provider) GetTypeService() *typeofappointment.Service {
+	return p.typeService
 }
 func (p *Provider) Shutdown() {
 	p.repository.Shutdown()

@@ -24,6 +24,12 @@ func (s *Service) GetAppointments() ([]*model.Appointment, error) {
 			continue
 		}
 		a[index].Doctor = d
+		t, err := s.repository.GetTypeRepository().GetTypeFromID(int64(appointment.Type.ID))
+		if err != nil {
+			continue
+		}
+		a[index].Type = t
+
 	}
 	if err != nil {
 		return nil, err
