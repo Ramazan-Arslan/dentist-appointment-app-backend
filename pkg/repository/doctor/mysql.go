@@ -72,3 +72,24 @@ func (r *MySQLRepository) Add(doctor *model.Doctor) (bool, error) {
 
 	return true, nil
 }
+func (r *MySQLRepository) Update(doctor *model.Doctor) (bool, error) {
+
+	stmt, err := r.db.Prepare("UPDATE " + tableName + " SET full_name=?, phone=?, gaint=? WHERE id=?")
+	if err != nil {
+		return false, err
+	}
+	_, err = stmt.Exec(doctor.FullName, doctor.Phone, doctor.Gain, doctor.ID)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+func (r *MySQLRepository) CheckExists(id uint) (bool, error) {
+	var exists bool
+	row := r.db.QueryRow(`SELECT EXISTS(SELECT 1 FROM `+tableName+` WHERE id=? )`, id)
+	if err := row.Scan(&exists); err != nil {
+		return false, err
+	}
+	return exists, nil
+}

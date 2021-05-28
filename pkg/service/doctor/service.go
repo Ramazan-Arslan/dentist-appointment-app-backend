@@ -34,3 +34,22 @@ func (s *Service) AddDoctor(doctor model.Doctor) (bool, error) {
 
 	return boolValue, err
 }
+
+func (s *Service) UpdateDoctor(doctor model.Doctor) (bool, error) {
+
+	// check customer exists
+	exists, err := s.repository.GetDoctorRepository().CheckExists(doctor.ID)
+	if err != nil {
+		return false, err
+	}
+	if !exists {
+		return false, err
+	}
+
+	// add customer to the repository
+	boolValue, err := s.repository.GetDoctorRepository().Update(&doctor)
+	if err != nil {
+		return false, nil
+	}
+	return boolValue, nil
+}

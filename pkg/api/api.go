@@ -40,6 +40,7 @@ func New(config *Config, svc service.Service, router *mux.Router) (*API, error) 
 	//doctor endpoints
 	api.Router.HandleFunc("/api/v1/doctorInfo/{doctorID}", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.DoctorInfo)))).Methods("POST")
 	api.Router.HandleFunc("/api/v1/add/doctor", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.AddDoctor)))).Methods("POST")
+	api.Router.HandleFunc("/api/v1/update/doctor", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.UpdateDoctor)))).Methods("POST")
 
 	//appointments endpoints
 	api.Router.HandleFunc("/api/v1/appointments", api.corsMiddleware(api.jwtMiddleware(api.logMiddleware(api.GetAllAppointments)))).Methods("GET")

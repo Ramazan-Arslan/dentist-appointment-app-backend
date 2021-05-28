@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// login handles login info request
+// Doctor info handler
 func (a *API) DoctorInfo(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.ParseInt(vars["doctorID"], 10, 64)
@@ -30,7 +30,7 @@ func (a *API) DoctorInfo(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// login handles login info request
+// Add doctor handler
 func (a *API) AddDoctor(w http.ResponseWriter, r *http.Request) {
 	var fwReq model.Doctor
 	err := json.NewDecoder(r.Body).Decode(&fwReq)
@@ -42,6 +42,26 @@ func (a *API) AddDoctor(w http.ResponseWriter, r *http.Request) {
 	doctorInfo, err := a.service.GetDoctorService().AddDoctor(fwReq)
 	if err != nil {
 		response.Errorf(w, r, fmt.Errorf("error adding doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// write response
+	response.Write(w, r, doctorInfo)
+	return
+}
+
+// Update doctor handler
+func (a *API) UpdateDoctor(w http.ResponseWriter, r *http.Request) {
+	var fwReq model.Doctor
+	err := json.NewDecoder(r.Body).Decode(&fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
+		return
+	}
+	// get user info
+	doctorInfo, err := a.service.GetDoctorService().UpdateDoctor(fwReq)
+	if err != nil {
+		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
 
