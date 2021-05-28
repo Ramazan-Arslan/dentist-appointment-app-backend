@@ -18,6 +18,13 @@ func NewService(repo repository.Repository) (*Service, error) {
 func (s *Service) GetAppointments() ([]*model.Appointment, error) {
 
 	a, err := s.repository.GetAppointmentRepository().GetAll()
+	for index, appointment := range a {
+		d, err := s.repository.GetDoctorRepository().GetDoctorFromID(int64(appointment.Doctor.ID))
+		if err != nil {
+			continue
+		}
+		a[index].Doctor = d
+	}
 	if err != nil {
 		return nil, err
 	}
