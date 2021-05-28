@@ -37,3 +37,13 @@ func (s *Service) GetAppointments() ([]*model.Appointment, error) {
 
 	return a, err
 }
+
+func (s *Service) AddAppointment(appointment model.Appointment) (bool, error) {
+
+	boolValue, err := s.repository.GetAppointmentRepository().Add(&appointment)
+	if err != nil {
+		return false, err
+	}
+
+	return boolValue, err
+}

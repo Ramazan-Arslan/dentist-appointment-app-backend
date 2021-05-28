@@ -11,6 +11,7 @@ type Reader interface {
 }
 
 type Writer interface {
+	Add(*model.Appointment) (bool, error)
 }
 
 //Repository repository interface
@@ -20,5 +21,5 @@ type Repository interface {
 }
 
 var (
-	ErrSupportNotFound = errors.New("doctor not found")
+	ErrSupportNotFound = errors.New("appointment not found")
 )

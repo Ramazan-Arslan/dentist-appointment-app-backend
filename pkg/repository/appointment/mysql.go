@@ -48,7 +48,7 @@ func NewMySQLRepository(db *sql.DB) (*MySQLRepository, error) {
 	}, nil
 }
 
-// Return active deviceses count
+// Return all Appointments
 func (r *MySQLRepository) GetAll() ([]*model.Appointment, error) {
 	q := "SELECT id, doctor_id, type_id, patient_name, patient_age, patient_gender, patient_phone, date, hour, description FROM " + tableName
 
@@ -72,4 +72,19 @@ func (r *MySQLRepository) GetAll() ([]*model.Appointment, error) {
 		appointments = append(appointments, a)
 	}
 	return appointments, nil
+}
+
+// Add an Appointments
+func (r *MySQLRepository) Add(appointment *model.Appointment) (bool, error) {
+
+	stmt, err := r.db.Prepare("insert into " + tableName + " (doctor_id, type_id, patient_name, patient_age, patient_gender, patient_phone, date, hour, description) VALUES(?,?,?,?,?,?,?,?,?)")
+	if err != nil {
+		return false, err
+	}
+	_, err = stmt.Exec(appointment.Doctor.ID, appointment.Type.ID, appointment.PatientName, appointment.PatientAge, appointment.PatientGender, appointment.PatientPhone, appointment.Date, appointment.Hour, appointment.Description)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
