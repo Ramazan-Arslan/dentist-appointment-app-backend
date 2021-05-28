@@ -11,7 +11,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// login handles login info request
 func (a *API) GetAllAppointments(w http.ResponseWriter, r *http.Request) {
 
 	appointments, err := a.service.GetAppointmentService().GetAppointments()
@@ -19,13 +18,11 @@ func (a *API) GetAllAppointments(w http.ResponseWriter, r *http.Request) {
 		response.Errorf(w, r, fmt.Errorf("error getting appointments : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println(appointments)
 	// write response
 	response.Write(w, r, appointments)
 	return
 }
 
-// login handles login info request
 func (a *API) AddAppointments(w http.ResponseWriter, r *http.Request) {
 
 	var fwReq model.Appointment
@@ -45,7 +42,6 @@ func (a *API) AddAppointments(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// Update Appointment handler
 func (a *API) UpdateAppointment(w http.ResponseWriter, r *http.Request) {
 	var fwReq model.Appointment
 	err := json.NewDecoder(r.Body).Decode(&fwReq)
@@ -53,15 +49,15 @@ func (a *API) UpdateAppointment(w http.ResponseWriter, r *http.Request) {
 		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
-	// udapte type
-	typeInfo, err := a.service.GetAppointmentService().UpdateAppointment(fwReq)
+	// update type
+	appointmentInfo, err := a.service.GetAppointmentService().UpdateAppointment(fwReq)
 	if err != nil {
 		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// write response
-	response.Write(w, r, typeInfo)
+	response.Write(w, r, appointmentInfo)
 	return
 }
 
@@ -74,13 +70,13 @@ func (a *API) DeleteAppointment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// delete type
-	typeInfo, err := a.service.GetAppointmentService().DeleteAppointment(uint(id))
+	appointmentInfo, err := a.service.GetAppointmentService().DeleteAppointment(uint(id))
 	if err != nil {
 		response.Errorf(w, r, fmt.Errorf("error update doctor : %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// write response
-	response.Write(w, r, typeInfo)
+	response.Write(w, r, appointmentInfo)
 	return
 }

@@ -51,7 +51,6 @@ func (r *MySQLRepository) GetTypeFromID(id int64) (*model.Type, error) {
 	t := &model.Type{}
 
 	if err := res.Scan(&t.ID, &t.Type, &t.Price); err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 

@@ -52,7 +52,6 @@ func (r *MySQLRepository) GetDoctorFromID(id int64) (*model.Doctor, error) {
 	d := &model.Doctor{}
 
 	if err := res.Scan(&d.ID, &d.FullName, &d.Phone, &d.Gain); err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 

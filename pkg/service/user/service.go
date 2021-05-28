@@ -31,6 +31,7 @@ func (s *Service) Login(user model.User) (*model.User, error) {
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 	token, err := at.SignedString([]byte("your-super-secret"))
 	u.Accesstoken = token
+	u.Userdata.Password = ""
 	if err != nil {
 		return nil, err
 	}

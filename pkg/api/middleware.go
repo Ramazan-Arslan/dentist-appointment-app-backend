@@ -67,7 +67,6 @@ func (a *API) jwtMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Println(err)
 			return
 		}
 

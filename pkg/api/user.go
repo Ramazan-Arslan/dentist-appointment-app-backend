@@ -23,7 +23,6 @@ func (a *API) Login(w http.ResponseWriter, r *http.Request) {
 		response.Errorf(w, r, fmt.Errorf("error getting login info: %v", err), http.StatusBadRequest, err.Error())
 		return
 	}
-	fmt.Println("login")
 	// write response
 	response.Write(w, r, UserInfo)
 	return
