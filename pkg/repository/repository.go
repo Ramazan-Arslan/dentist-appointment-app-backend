@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/ceng316/dentist-backend/pkg/repository/appointment"
 	"github.com/ceng316/dentist-backend/pkg/repository/doctor"
 	"github.com/ceng316/dentist-backend/pkg/repository/user"
 )
@@ -10,5 +11,7 @@ import (
 type Repository interface {
 	GetUserRepository() user.Repository
 	GetDoctorRepository() doctor.Repository
+	GetAppointmentRepository() appointment.Repository
+
 	Shutdown()
 }

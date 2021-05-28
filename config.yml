@@ -1,4 +1,4 @@
-listen_address: localhost:8080
+listen_address: ec2-3-137-140-228.us-east-2.compute.amazonaws.com:8080
 cert_file: ./server.crt
 key_file: ./server.key
 
@@ -9,6 +9,6 @@ api:
 
 database:
     addr: 127.0.0.1:3306
-    username: root
-    password: test
+    username: ceng316
+    password: ceng316
     db_name: dentist_app

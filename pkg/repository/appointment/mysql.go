@@ -14,16 +14,22 @@ type MySQLRepository struct {
 }
 
 const (
-	tableName = "appointment"
+	tableName = "appointments"
 )
 
 const (
 	initTableTemplate = `
 	CREATE TABLE IF NOT EXISTS %s (
 		id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		doctor_id varchar(256) NOT NULL DEFAULT 0,
-		type_id varchar(256) NOT NULL DEFAULT 0,
-		patient_id
+		doctor_id bigint(20) NOT NULL DEFAULT 0,
+		type_id bigint(20) NOT NULL DEFAULT 0,
+		patient_name varchar(256) NOT NULL DEFAULT '',
+		patient_age bigint(20) NOT NULL DEFAULT 0,
+		patient_gender varchar(256) NOT NULL DEFAULT '',
+		patient_phone varchar(256) NOT NULL DEFAULT '',
+		date bigint(20) NOT NULL DEFAULT 0,
+		hour varchar(256) NOT NULL DEFAULT '',
+		description varchar(256) NOT NULL DEFAULT '',
 		UNIQUE KEY id (id)
 	  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;	
 `
@@ -43,17 +49,27 @@ func NewMySQLRepository(db *sql.DB) (*MySQLRepository, error) {
 }
 
 // Return active deviceses count
-func (r *MySQLRepository) GetDoctor(user model.Doctor) (*model.Doctor, error) {
-	q := "SELECT id, full_name FROM " + tableName + " WHERE id=?"
+func (r *MySQLRepository) GetAll() ([]*model.Appointment, error) {
+	q := "SELECT id, doctor_id, type_id, patient_name, patient_age, patient_gender, patient_phone, date, hour, description FROM " + tableName
 
-	logrus.Debug("QUERY: ", q, "id: ", user.ID)
-	res := r.db.QueryRow(q, user.ID)
-
-	d := &model.Doctor{}
-
-	if err := res.Scan(&d.ID, &d.FullName); err != nil {
+	res, err := r.db.Query(q)
+	if err != nil {
 		return nil, err
 	}
+	var appointments []*model.Appointment
 
-	return d, nil
+	for res.Next() {
+		a := &model.Appointment{}
+		d := &model.Doctor{}
+		t := &model.Type{}
+		a.Type = t
+		a.Doctor = d
+		err = res.Scan(&a.ID, &a.Doctor.ID, &a.Type.ID, &a.PatientName, &a.PatientAge, &a.PatientGender, &a.PatientPhone, &a.Date, &a.Hour, &a.Description)
+		if err != nil {
+			logrus.Warn("couldn't scan appointment data from db", err)
+			continue
+		}
+		appointments = append(appointments, a)
+	}
+	return appointments, nil
 }
